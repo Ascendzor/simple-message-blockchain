@@ -2,12 +2,16 @@ const communication = require('./communication')
 const blockStateToCanonicalArray = require('./blockStateToCanonicalArray')
 const hashBlockState = require('./hashBlockState')
 const merklinateTransactions = require('./merklinateTransactions')
+const _ = require('lodash')
 
 let genesisBlockState = {
   previousHash: null,
   merkleRoot: null,
   difficulty: 'ffffffffffffffff',
-  transactions: null,
+  transactions: [{
+    from: 'the big bang',
+    to: 'someones public address'
+  }],
   nonce: null,
   number: 0
 }
@@ -18,42 +22,38 @@ let blockToBeConfirmed = genesisBlockState
 let blocks = []
 let memPool = []
 
-const publishBlockFound = ({state, previousHash, nonce}) => {
+const publishBlockFound = ({state, hash, nonce}) => {
   blocks.push(state)
-  let transactions = [{
-    from: 'the big bang',
-    to: 'someones public address'
-  }]
-  merklinateTransactions({transactions}).then(merkleRoot => {
-    blockToBeConfirmed = {
-      previousHash,
-      nonce,
-      difficulty: 'ffffffffffffffff',
-      transactions,
-      merkleRoot,
-      number: blocks.length-1
-    }
-  })
+  blockToBeConfirmed = {
+    previousHash: hash,
+    nonce,
+    difficulty: 'ffffffffffffffff',
+    transactions: [{
+      from: 'the big bang',
+      to: 'someones public address'
+    }],
+    merkleRoot: null,
+    number: blocks.length-1
+  }
 }
-console.log(blockToBeConfirmed)
 
 const be = () => {
-  const nonce = Math.floor(Math.random() * 1000000)
-  const hashOfBlock = hashBlockState({
-    state: blockStateToCanonicalArray({state: blockToBeConfirmed}),
-    nonce
-  })
-  console.log('hash of block: ' + hashOfBlock)
-
-  if(hashOfBlock < blockToBeConfirmed.difficulty) {
-    publishBlockFound({
-      state: blockToBeConfirmed,
-      prevHash: hashOfBlock,
-      nonce
+  merklinateTransactions({transactions: blockToBeConfirmed.transactions}).then(merkleRoot => {
+    blockToBeConfirmed.merkleRoot = merkleRoot
+    blockToBeConfirmed.nonce = Math.floor(Math.random() * 1000000)
+    const hashOfBlock = hashBlockState({
+      state: blockStateToCanonicalArray({state: _.omit(blockToBeConfirmed, 'transactions')}),
+      nonce: blockToBeConfirmed.nonce
     })
-  } else {
-    console.log('didnt find a solution')
-  }
+
+    if(hashOfBlock < blockToBeConfirmed.difficulty) {
+      console.log('=============================')
+      console.log(blocks)
+      publishBlockFound({state: blockToBeConfirmed, hash: hashOfBlock})
+    } else {
+      console.log('didnt find a solution')
+    }
+  })
 }
 
 communication.listenForOthers().then(() => {
