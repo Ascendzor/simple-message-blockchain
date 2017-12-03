@@ -3,6 +3,7 @@ const blockStateToCanonicalArray = require('./blockStateToCanonicalArray')
 const hashBlockState = require('./hashBlockState')
 const merklinateTransactions = require('./merklinateTransactions')
 const _ = require('lodash')
+const readline = require('readline')
 
 let genesisBlockState = {
   previousHash: null,
@@ -47,11 +48,11 @@ const be = () => {
     })
 
     if(hashOfBlock < blockToBeConfirmed.difficulty) {
-      console.log('=============================')
-      console.log(blocks)
+      // console.log('=============================')
+      // console.log(blocks)
       publishBlockFound({state: blockToBeConfirmed, hash: hashOfBlock})
     } else {
-      console.log('didnt find a solution')
+      // console.log('didnt find a solution')
     }
   })
 }
@@ -61,3 +62,13 @@ communication.listenForOthers().then(() => {
 }).then(() => {
   setInterval(be, 2000)
 })
+
+const readlineActual = readline.createInterface({input: process.stdin, output: process.stdout})
+
+const doQuestion = () => {
+  readlineActual.question('command away: ', command => {
+    if(command === 'blocks') console.log(blocks)
+    doQuestion()
+  })
+}
+doQuestion()
