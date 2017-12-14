@@ -2,8 +2,10 @@
 
 Work in progress.
 
-Purpose: To create a client in javascript of a message-blockchain for experimental and educational purposes.
+##Purpose
+To create a client in javascript of a message-blockchain for experimental and educational purposes.
 
+##Progress
 * ~~let people create public&private keys~~
 * ~~let people sign transactions~~
 * ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
@@ -15,16 +17,16 @@ Purpose: To create a client in javascript of a message-blockchain for experiment
 * include peers transactions into local block discovery
 * handle accidental forks (block solve race condition)
 
-#Dependencies
+##Dependencies
 
 node 6.10.3
 
-#How to run:
+##How to run:
 
 `npm i`
 `node networkNode`
 
-#CLI commands
+##CLI commands
 
 'blocks' -> prints a list of the blocks as your node sees them
 
