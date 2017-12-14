@@ -6,16 +6,16 @@ Work in progress.
 To create a client in javascript of a message-blockchain for experimental and educational purposes.
 
 # Progress
-* ~~let people create public&private keys~~
-* ~~let people sign transactions~~
-* ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
-* ~~PoW (sha256 for simplicity)~~
-* difficulty adjustment
-* join peers
-* verify blocks from peers
-* broadcast transactions
-* include peers transactions into local block discovery
-* handle accidental forks (block solve race condition)
+- [x] ~~let people create public&private keys~~
+- [x] ~~let people sign transactions~~
+- [x] ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
+- [x] ~~PoW (sha256 for simplicity)~~
+- [ ] difficulty adjustment
+- [ ] join peers
+- [ ] verify blocks from peers
+- [ ] broadcast transactions
+- [ ] include peers transactions into local block discovery
+- [ ] handle accidental forks (block solve race condition)
 
 # Dependencies
 
