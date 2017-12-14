@@ -1,6 +1,4 @@
-# simple-message-blockchain
-
-Work in progress.
+# simple-message-blockchain 0.1.0
 
 # Purpose
 To create a client in javascript of a message-blockchain for experimental and educational purposes.
