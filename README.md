@@ -1,9 +1,9 @@
-# simple-message-blockchain 0.1.0
+# simple-message-blockchain v0.1.0
 
 # Purpose
 To create a client in javascript of a message-blockchain for experimental and educational purposes.
 
-# Progress
+# Progress (until v1 assume nothing has been implemented correctly)
 - [x] ~~let people create public&private keys~~
 - [x] ~~let people sign transactions~~
 - [x] ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
