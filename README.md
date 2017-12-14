@@ -24,6 +24,7 @@ node 6.10.3
 # How to run:
 
 `npm i`
+
 `node networkNode`
 
 # CLI commands
