@@ -123,7 +123,15 @@ const doQuestion = () => {
     } else if(command.startsWith('setPrivateKey')) {
       keyPair.privateKey = command.split(' ')[1]
     } else if(command.startsWith('help')) {
-      const commands = ['blocks', 'block <number>', 'transaction <message> <privateKey>', 'generateKeyPair', 'setPublicKey <publicKey>', 'setPrivateKey <privateKey>']
+      const commands = [
+        'blocks',
+        'block <number>',
+        'transaction <message> <privateKey>',
+        'generateKeyPair',
+        'setPublicKey <publicKey>',
+        'setPrivateKey <privateKey>',
+        'viewAccount <publicKey>'
+      ]
       commands.forEach(a => console.log(a))
     } else if(command.startsWith('viewAccount')) {
       const account = blockChainExplorer.getAccountDetails({blocks, publicKey: command.split(' ')[1]})
