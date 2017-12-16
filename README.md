@@ -21,7 +21,7 @@ transactions (see transactions section, at the bottom of this readme)
 - [x] ~~let people sign transactions~~
 - [x] ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
 - [x] ~~PoW (sha256 for simplicity)~~
-- [ ] difficulty adjustment
+- [x] ~~difficulty adjustment~~ (formula here https://github.com/Ascendzor/simple-message-blockchain/blob/master/adjustDifficulty.js)
 - [ ] earn messageCoin
 - [ ] write message
 - [ ] join peers
