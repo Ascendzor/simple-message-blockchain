@@ -8,15 +8,23 @@ const readline = require('readline')
 const keys = require('./keys')
 const moment = require('moment')
 const adjustDifficulty = require('./adjustDifficulty')
+const transactions = require('./transactions')
+const blockChainExplorer = require('./blockChainExplorer')
 
+let keyPair = {
+  privateKey: '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0',
+  publicKey: '042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50'
+}
+
+const rewardTransaction = transactions.createRewardTransaction({
+  publicKey: keyPair.publicKey,
+  privateKey: keyPair.privateKey
+})
 let genesisBlockState = {
   previousHash: null,
   merkleRoot: null,
   difficulty: 0x000000ffffffffff,
-  transactions: [{
-    from: 'the big bang',
-    to: 'someones public address'
-  }],
+  transactions: [rewardTransaction],
   nonce: null,
   number: 0,
   timeStamp: +moment.utc()
@@ -27,11 +35,6 @@ let blockToBeConfirmed = genesisBlockState
 
 let blocks = [genesisBlockState]
 let memPool = []
-
-let keyPair = {
-  privateKey: '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0',
-  publicKey: '042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50'
-}
 
 const getLast16BlockTimeStamps = ({blocks}) => {
   return blocks.filter((block, key) => ((key+16) > blocks.length)).map(b => b.timeStamp)
@@ -45,20 +48,19 @@ const publishBlockFound = ({state, hash, nonce}) => {
     currentTimeStamp,
     currentDifficulty: state.difficulty
   })
+
   blocks.push(state)
-  const miningRewardBody = JSON.stringify({
-    writer: keyPair.publicKey,
-    message: 'minerReward'
+
+  const rewardTransaction = transactions.createRewardTransaction({
+    publicKey: keyPair.publicKey,
+    privateKey: keyPair.privateKey
   })
-  const transactionSignature = keys.sign({message: miningRewardBody, privateKey: keyPair.privateKey})
+
   blockToBeConfirmed = {
     previousHash: hash,
     nonce,
     difficulty: newDifficulty,
-    transactions: [{
-      body: miningRewardBody,
-      signature: transactionSignature
-    }],
+    transactions: [rewardTransaction],
     merkleRoot: null,
     number: blocks.length,
     timeStamp: currentTimeStamp
@@ -96,6 +98,7 @@ const readlineActual = readline.createInterface({input: process.stdin, output: p
 const doQuestion = () => {
   readlineActual.question('command away: ', command => {
     command = command.toString()
+    console.log(command)
     if(command === 'blocks') {
       console.log(blocks)
     } else if(command.startsWith('block')) {
@@ -104,7 +107,7 @@ const doQuestion = () => {
       command = command.split(' ')
       const message = command[1]
       const body = JSON.stringify({
-        writer: keyPair.publicKey,
+        publicKey: keyPair.publicKey,
         message
       })
       blockToBeConfirmed.transactions.push({
@@ -122,6 +125,9 @@ const doQuestion = () => {
     } else if(command.startsWith('help')) {
       const commands = ['blocks', 'block <number>', 'transaction <message> <privateKey>', 'generateKeyPair', 'setPublicKey <publicKey>', 'setPrivateKey <privateKey>']
       commands.forEach(a => console.log(a))
+    } else if(command.startsWith('viewAccount')) {
+      const account = blockChainExplorer.getAccountDetails({blocks, publicKey: command.split(' ')[1]})
+      console.log(account)
     }
     doQuestion()
   })
