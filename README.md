@@ -27,6 +27,7 @@ transactions (see transactions section, at the bottom of this readme)
 - [ ] join peers
 - [ ] verify blocks
 - [ ] broadcast transactions
+- [ ] persist blockchain onto fs
 - [ ] include peers transactions into local block discovery
 - [ ] handle accidental forks (block solve race condition)
 - [ ] trade messageCoin
