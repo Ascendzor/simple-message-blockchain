@@ -25,29 +25,26 @@ let genesisBlockState = {
 let blockState = blockStateToCanonicalArray({state: genesisBlockState})
 let blockToBeConfirmed = genesisBlockState
 
-let blocks = []
+let blocks = [genesisBlockState]
 let memPool = []
-
-const publicKey = '042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50'
-const privateKey = '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0'
 
 let keyPair = {
   privateKey: '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0',
   publicKey: '042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50'
 }
 
+const getLast16BlockTimeStamps = ({blocks}) => {
+  return blocks.filter((block, key) => ((key+16) > blocks.length)).map(b => b.timeStamp)
+}
+
 const publishBlockFound = ({state, hash, nonce}) => {
-  console.log(blocks)
   const previousBlock = last(blocks)
   const currentTimeStamp = +moment.utc()
   const newDifficulty = adjustDifficulty({
-    previousTimeStamp: previousBlock ? previousBlock.timeStamp : genesisBlockState.timeStamp,
-    newTimeStamp: currentTimeStamp,
+    previousTimeStamps: getLast16BlockTimeStamps({blocks}),
     currentTimeStamp,
     currentDifficulty: state.difficulty
   })
-  console.log('genesisBlockState.difficulty', genesisBlockState.difficulty)
-  console.log('newDifficulty', newDifficulty)
   blocks.push(state)
   const miningRewardBody = JSON.stringify({
     writer: keyPair.publicKey,
@@ -80,17 +77,11 @@ const be = () => {
       nonce: blockToBeConfirmed.nonce
     })
 
-
-
     const blockHashAsInt = parseInt(hashOfBlock, 16)
     const difficultyAsInt = parseInt(blockToBeConfirmed.difficulty, 16)
-    console.log(hashOfBlock)
 
     if(blockHashAsInt > difficultyAsInt) {
-      console.log('solution found!')
       publishBlockFound({state: blockToBeConfirmed, hash: hashOfBlock})
-    } else {
-      // console.log('didnt find a solution')
     }
   })
 }
@@ -98,10 +89,8 @@ const be = () => {
 communication.listenForOthers().then(() => {
   return communication.joinPeers()
 }).then(() => {
-  setInterval(be, 100)
+  setInterval(be, 16)
 })
-
-
 
 const readlineActual = readline.createInterface({input: process.stdin, output: process.stdout})
 const doQuestion = () => {
