@@ -6,9 +6,9 @@ To create a client in javascript of a message-blockchain for experimental and ed
 # What it is
 Decentralized string store with accountability.
 
-Reward: Protocol is the block to be discovered includes a transaction with "miningReward" and a public address that is therefore awarded one "messageCoin"
+Reward: The block to be discovered includes a transaction with "reward" and a public address that is therefore awarded one "messageCoin"
 
-Proof of work: sha256, vulnerable to ASICs I know, enhance your calm, this is a chill project meant for experimenting things like having the network be attacked just to see what happens.
+Proof of work: sha256, vulnerable to ASICs I know, enhance your calm, this is a chill project that's intended to be simple.
 
 Difficulty: targeting 30seconds, adjusts every block based on previous block time
 
@@ -22,7 +22,7 @@ transactions (see transactions section, at the bottom of this readme)
 - [x] ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
 - [x] ~~PoW (sha256 for simplicity)~~
 - [x] ~~difficulty adjustment~~ (formula here https://github.com/Ascendzor/simple-message-blockchain/blob/master/adjustDifficulty.js)
-- [ ] earn messageCoin
+- [x] ~~earn messageCoin~~
 - [ ] write message
 - [ ] join peers
 - [ ] verify blocks
@@ -60,9 +60,9 @@ node 6.10.3
 
 There will likely end up being three types of transactions
 
-miningReward, message, trade
+reward, message, trade
 
-miningReward rewards the block discoverer with one "messageCoin". miningReward needs a publicKey and good block.
+reward rewards the block discoverer with one "messageCoin". reward needs a publicKey and good block.
 
 message will let a user write a message into the blockchain, at the cost of one "messageCoin". message needs a publicKey, messageString, and a signature of the messageString using the privateKey that is associated with the publicKey.
 
