@@ -19,6 +19,12 @@ module.exports = {
   getState: () => {
     return state
   },
+  addBlock: ({block}) => {
+    state.blocks.push(block)
+  },
+  blocks: () => {
+    return state.blocks
+  },
   addUnconfirmedTransaction: ({transaction}) => {
 
   }

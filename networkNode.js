@@ -21,6 +21,7 @@ const rewardTransaction = transactions.createRewardTransaction({
   publicKey: state.keyPair().publicKey,
   privateKey: state.keyPair().privateKey
 })
+
 let genesisBlockState = {
   previousHash: null,
   merkleRoot: null,
@@ -31,26 +32,25 @@ let genesisBlockState = {
   timeStamp: +moment.utc()
 }
 
-let blockState = blockStateToCanonicalArray({state: genesisBlockState})
+let blockState = blockStateToCanonicalArray({blockState: genesisBlockState})
 let blockToBeConfirmed = genesisBlockState
 
-let blocks = [genesisBlockState]
-let memPool = []
+state.addBlock({block: genesisBlockState})
 
-const getLast16BlockTimeStamps = ({blocks}) => {
-  return blocks.filter((block, key) => ((key+16) > blocks.length)).map(b => b.timeStamp)
+const getLast16BlockTimeStamps = () => {
+  return state.blocks().filter((block, key) => ((key+16) > state.blocks().length)).map(b => b.timeStamp)
 }
 
 const publishBlockFound = ({blockState, hash, nonce}) => {
-  const previousBlock = last(blocks)
+  const previousBlock = last(state.blocks())
   const currentTimeStamp = +moment.utc()
   const newDifficulty = adjustDifficulty({
-    previousTimeStamps: getLast16BlockTimeStamps({blocks}),
+    previousTimeStamps: getLast16BlockTimeStamps(),
     currentTimeStamp,
     currentDifficulty: blockState.difficulty
   })
 
-  blocks.push(blockState)
+  state.addBlock({block: blockState})
 
   const rewardTransaction = transactions.createRewardTransaction({
     publicKey: state.keyPair().publicKey,
@@ -63,7 +63,7 @@ const publishBlockFound = ({blockState, hash, nonce}) => {
     difficulty: newDifficulty,
     transactions: [rewardTransaction],
     merkleRoot: null,
-    number: blocks.length,
+    number: state.blocks().length,
     timeStamp: currentTimeStamp
   }
 }
@@ -76,7 +76,7 @@ const be = () => {
     blockToBeConfirmed.merkleRoot = merkleRoot
     blockToBeConfirmed.nonce = Math.floor(Math.random() * 1000000)
     const hashOfBlock = hashBlockState({
-      state: blockStateToCanonicalArray({state: omit(blockToBeConfirmed, 'transactions')}),
+      state: blockStateToCanonicalArray({blockState: omit(blockToBeConfirmed, 'transactions')}),
       nonce: blockToBeConfirmed.nonce
     })
 
@@ -101,9 +101,9 @@ const doQuestion = () => {
     command = command.toString()
     console.log(command)
     if(command === 'blocks') {
-      console.log(blocks)
+      console.log(state.blocks())
     } else if(command.startsWith('block')) {
-      console.log(blocks[command.split(' ')[1]])
+      console.log(state.blocks()[command.split(' ')[1]])
     } else if(command.startsWith('transaction')) {
       command = command.split(' ')
       const message = command[1]
@@ -135,7 +135,7 @@ const doQuestion = () => {
       ]
       commands.forEach(a => console.log(a))
     } else if(command.startsWith('viewAccount')) {
-      const account = blockChainExplorer.getAccountDetails({blocks, publicKey: command.split(' ')[1]})
+      const account = blockChainExplorer.getAccountDetails({publicKey: command.split(' ')[1]})
       console.log(account)
     }
     doQuestion()

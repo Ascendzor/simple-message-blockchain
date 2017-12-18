@@ -5,13 +5,13 @@ const order = {
   transactions: 3
 }
 
-module.exports = ({state}) => {
-  let keysInOrder = Object.keys(state).map(key => key)
+module.exports = ({blockState}) => {
+  let keysInOrder = Object.keys(blockState).map(key => key)
   keysInOrder = keysInOrder.sort((a, b) => order[a] > order[b])
 
   let blockStateAsCanonicalArray = []
   keysInOrder.forEach(key => {
-    blockStateAsCanonicalArray.push(state[key])
+    blockStateAsCanonicalArray.push(blockState[key])
   })
   return blockStateAsCanonicalArray
 }
