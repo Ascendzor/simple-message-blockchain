@@ -6,7 +6,7 @@ const transactions = require('./transactions')
 const blockChainExplorer = require('./blockChainExplorer')
 const state = require('./state')
 const cli = require('./cli')
-const discoverBlocks = require('./discoverBlock')
+const discoverBlocks = require('./discoverBlocks')
 const createNextBlockFrame = require('./createNextBlockFrame')
 
 state.setKeyPair({
@@ -19,7 +19,7 @@ const rewardTransaction = transactions.createRewardTransaction({
   privateKey: state.keyPair().privateKey
 })
 
-let genesisBlockState = {
+const genesisBlockState = {
   hash: null,
   previousHash: null,
   merkleRoot: null,
