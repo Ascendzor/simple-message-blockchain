@@ -40,7 +40,7 @@ node 6.10.3
 
 `npm i`
 
-`node networkNode`
+`node be`
 
 # CLI commands
 
