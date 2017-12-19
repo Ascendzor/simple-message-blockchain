@@ -5,9 +5,6 @@ let state = {
 }
 
 module.exports = {
-  setState: ({newState}) => {
-    state = newState
-  },
   setKeyPair: ({publicKey, privateKey}) => {
     if(!publicKey && privateKey) state.keyPair.privateKey = privateKey
     if(!privateKey && publicKey) state.keyPair.publicKey = publicKey
