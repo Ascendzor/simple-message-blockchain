@@ -9,6 +9,6 @@ module.exports = {
     return {body, signature}
   },
   createWriteTransaction: () => {
-
+    
   }
 }
