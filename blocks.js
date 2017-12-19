@@ -2,8 +2,16 @@ const last = require('lodash/last')
 const transactions = require('./transactions')
 const adjustDifficulty = require('./adjustDifficulty')
 const blockTimesToBeTakenIntoConsiderationWhenCalculatingDifficulty = 16
+const moment = require('moment')
+const SHA256 = require("crypto-js/sha256")
+
+const hashBlock = ({blockToBeHashed}) => {
+  const toBeHashed = blockToBeHashed.previousHash + blockToBeHashed.merkleRoot + blockToBeHashed.difficulty + blockToBeHashed.number + blockToBeHashed.timeStamp
+  return SHA256(toBeHashed).toString()
+}
 
 module.exports = {
+  hashBlock,
   createGenesisBlock: ({publicKey, privateKey, now}) => {
     const rewardTransaction = transactions.createRewardTransaction({
       publicKey,
@@ -37,6 +45,7 @@ module.exports = {
     })
 
     return {
+      hash: null,
       previousHash: lastBlock ? lastBlock.hash : null,
       nonce: lastBlock.nonce,
       difficulty: newDifficulty,
@@ -45,5 +54,15 @@ module.exports = {
       number: blocks.length,
       timeStamp: now
     }
+  },
+  verifyBlock: ({blocks, blockToBeVerified}) => {
+    const lastBlock = last(blocks)
+    if(!lastBlock) return true
+    if(blockToBeVerified.previousHash != lastBlock.hash) return false
+    if(blockToBeVerified.number != lastBlock.number+1) return false
+    if(blockToBeVerified.timeStamp < lastBlock.timeStamp) return false
+    if(hashBlock({blockToBeHashed: blockToBeVerified}) != blockToBeVerified.hash) return false
+
+    return true
   }
 }

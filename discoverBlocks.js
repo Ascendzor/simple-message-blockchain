@@ -1,17 +1,12 @@
-const merklinateTransactions = require('./merklinateTransactions')
 const omit = require('lodash/omit')
-const hashBlockState = require('./hashBlockState')
-const blockStateToCanonicalArray = require('./blockStateToCanonicalArray')
+const blocks = require('./blocks')
+const transactions = require('./transactions')
 
 module.exports = ({blockToBeDiscovered, onBlockDiscovered}) => {
-  merklinateTransactions({transactions: blockToBeDiscovered.transactions}).then(merkleRoot => {
+  transactions.generateMerkleRoot({transactions: blockToBeDiscovered.transactions}).then(merkleRoot => {
     blockToBeDiscovered.merkleRoot = merkleRoot
     blockToBeDiscovered.nonce = Math.floor(Math.random() * 1000000)
-    const hash = hashBlockState({
-      state: blockStateToCanonicalArray({blockState: omit(blockToBeDiscovered, 'transactions')}),
-      nonce: blockToBeDiscovered.nonce
-    })
-
+    const hash = blocks.hashBlock({blockToBeHashed: blockToBeDiscovered})
     const blockHashAsInt = parseInt(hash, 16)
     const difficultyAsInt = parseInt(blockToBeDiscovered.difficulty, 16)
 

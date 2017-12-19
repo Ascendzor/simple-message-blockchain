@@ -20,7 +20,9 @@ let blockToBeDiscovered = blocks.createGenesisBlock({
 })
 
 const onBlockDiscovered = ({blockState}) => {
-  // const isBlockValid = verifyBlock({blockState})
+  const isBlockValid = blocks.verifyBlock({blocks: state.blocks(), blockToBeVerified: blockState})
+  if(!isBlockValid) return console.log('failed validation')
+
   state.addBlock({block: blockState})
   blockToBeDiscovered = blocks.createNextBlockFrame({
     blocks: state.blocks(),
