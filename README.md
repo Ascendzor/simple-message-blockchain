@@ -25,7 +25,7 @@ transactions (see transactions section, at the bottom of this readme)
 - [x] ~~earn messageCoin~~
 - [ ] write message
 - [ ] join peers
-- [ ] verify blocks
+- [ ] verify blocks (almost! https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js)
 - [ ] broadcast transactions
 - [ ] persist blockchain onto fs
 - [ ] include peers transactions into local block discovery
