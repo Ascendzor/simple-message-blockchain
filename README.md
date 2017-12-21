@@ -10,7 +10,7 @@ Reward: The block to be discovered includes a transaction with "reward" and a pu
 
 Proof of work: sha256, vulnerable to ASICs I know, enhance your calm, this is a chill project that's intended to be simple.
 
-Difficulty: targeting 30seconds, adjusts every block based on previous block time
+Difficulty: targeting 60 seconds, adjusts every block based on previous block time
 
 max block size: none yet, but blocks aren't being streamed so the first bottleneck will probably be socketio event size restrictions I'm guessing?
 
