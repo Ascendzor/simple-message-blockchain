@@ -16,8 +16,6 @@ max block size: none yet, but blocks aren't being streamed so the first bottlene
 
 transactions (see transactions section, at the bottom of this readme)
 
-Block format specification and block verification is the key to creating your own blockchain rules. See https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js for how blocks are specified and verified in this project.
-
 # Progress (until v1 assume nothing has been implemented correctly)
 - [x] ~~let people create public&private keys~~
 - [x] ~~let people sign transactions~~
@@ -71,3 +69,9 @@ reward rewards the block discoverer with one "messageCoin". reward needs a publi
 message will let a user write a message into the blockchain, at the cost of one "messageCoin". message needs a publicKey, messageString, and a signature of the messageString using the privateKey that is associated with the publicKey.
 
 trade will let a user trade messageCoin to other users. trade will require an amount, a fromPublicKey, a toPublicKey, and a signature of all of the above using the privateKey that is connected with the fromPublicKey. trade will be invalidated if the fromPublicKey does not have as much messageCoin as it is trying to trade
+
+# What next?
+
+Block format specification and block verification is the key to creating your own blockchain rules. See https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js for how blocks are specified and verified in this chain.
+
+blockchains are protocols, not code. This is simply the first client for this type of blockchain, if you'd like to contribute to this simple-message-blockchain in your favourite language then go forth and create your own simple-message-blockchain in golang, python, ruby, C#, etc and join the simple-message-blockchain.
