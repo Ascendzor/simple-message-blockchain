@@ -1,7 +1,7 @@
 # simple-message-blockchain v0.1.0
 
 # Purpose
-To create a client in javascript of a message-blockchain for experimental and educational purposes.
+To create a client in javascript of a message-blockchain for experimental and educational purposes. Once version 1 is released and there are a few clients running in the mesh these strings that are written into the blockchain will never be deleted, that's the idea anyway. This project is not intended to be useful, but instead to demonstrate the capabilities of a decentralized additive datastore.
 
 # What it is
 Decentralized string store with accountability.
@@ -15,6 +15,8 @@ Difficulty: targeting 60 seconds, adjusts every block based on previous block ti
 max block size: none yet, but blocks aren't being streamed so the first bottleneck will probably be socketio event size restrictions I'm guessing?
 
 transactions (see transactions section, at the bottom of this readme)
+
+Block format specification and block verification is the key to creating your own blockchain rules. See https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js for how blocks are specified and verified in this project.
 
 # Progress (until v1 assume nothing has been implemented correctly)
 - [x] ~~let people create public&private keys~~
