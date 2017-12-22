@@ -39,6 +39,7 @@ communication.listenForOthers().then(() => {
 
 setInterval(() => {
   discoverBlocks({blockToBeDiscovered, onBlockDiscovered})
-}, 100)
+
+}, 32)
 
 cli()

@@ -6,7 +6,7 @@ const moment = require('moment')
 const SHA256 = require("crypto-js/sha256")
 
 const hashBlock = ({blockToBeHashed}) => {
-  const toBeHashed = blockToBeHashed.previousHash + blockToBeHashed.merkleRoot + blockToBeHashed.difficulty + blockToBeHashed.number + blockToBeHashed.timeStamp
+  const toBeHashed = blockToBeHashed.previousHash + blockToBeHashed.merkleRoot + blockToBeHashed.difficulty + blockToBeHashed.number + blockToBeHashed.timeStamp + blockToBeHashed.nonce
   return SHA256(toBeHashed).toString()
 }
 
@@ -22,7 +22,7 @@ module.exports = {
       hash: null,
       previousHash: null,
       merkleRoot: null,
-      difficulty: 0x000000ffffffffff,
+      difficulty: '1234ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
       transactions: [rewardTransaction],
       nonce: null,
       number: 0,
