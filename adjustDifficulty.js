@@ -1,4 +1,4 @@
-const targetTime = 1000 * 60 //10 seconds
+const targetTime = 1000 * 60 //60 seconds
 module.exports = ({previousTimeStamps, currentTimeStamp, currentDifficulty}) => {
   const averageTimeForBlocks = (previousTimeStamps.reduce((a,b) => a+b, 0) / previousTimeStamps.length)
   const timeDifference = currentTimeStamp - averageTimeForBlocks
