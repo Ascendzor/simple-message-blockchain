@@ -1,19 +1,22 @@
 module.exports = {
   getAccountDetails: ({blocks, publicKey}) => {
-    const coins = blocks.reduce((sum, block) => {
-      if(sum === undefined) sum = 0
-      const rewardTransaction = block.transactions.findIndex(t => {
-        const body = JSON.parse(t.body)
-        return body.type === 'reward' && body.publicKey === publicKey
+    let totalRewards = 0
+    let writes = []
+
+    blocks.forEach(block => {
+      block.transactions.forEach(transaction => {
+        const body = JSON.parse(transaction.body)
+        if(body.type === 'reward' && body.publicKey === publicKey) totalRewards++
+        if(body.type === 'write' && body.publicKey === publicKey) writes.push(body.message)
       })
-      if(rewardTransaction === -1) return sum
-      return sum+1
-    }, 0)
+    })
 
     return {
       publicKey,
-      coins,
-      messages: []
+      totalRewards,
+      totalWrites: writes.length,
+      currentCoins: totalRewards-writes.length,
+      writes
     }
   }
 }
