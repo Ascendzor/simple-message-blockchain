@@ -58,11 +58,12 @@ module.exports = {
   verifyBlock: ({blocks, blockToBeVerified}) => {
     const lastBlock = last(blocks)
     if(!lastBlock) return true //genesis check
-    if(blockToBeVerified.previousHash != lastBlock.hash) return false
-    if(blockToBeVerified.number != lastBlock.number+1) return false
-    if(blockToBeVerified.timeStamp < lastBlock.timeStamp) return false
-    if(hashBlock({blockToBeHashed: blockToBeVerified}) != blockToBeVerified.hash) return false
+    if(blockToBeVerified.previousHash != lastBlock.hash) return {err: 'invalid previousHash'}
+    if(blockToBeVerified.number != lastBlock.number+1) return {err: 'invalid number'}
+    if(blockToBeVerified.timeStamp < lastBlock.timeStamp) return {err: 'invalid timeStamp'}
+    if(hashBlock({blockToBeHashed: blockToBeVerified}) != blockToBeVerified.hash) return {err: 'invalid hash'}
+    if(transactions.verify({transactions: blockToBeVerified.transactions}).invalidTransactions) return {err: 'invalid transactions'}
 
-    return true
+    return {good: true}
   }
 }

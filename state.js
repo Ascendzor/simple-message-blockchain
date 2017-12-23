@@ -1,4 +1,6 @@
 const without = require('lodash/without')
+const transactions = require('./transactions')
+
 let state = {
   transactionsToBeConfirmed: [],
   blocks: [],

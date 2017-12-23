@@ -8,6 +8,7 @@ const cli = require('./cli')
 const discoverBlocks = require('./discoverBlocks')
 const blocks = require('./blocks')
 const union = require('lodash/union')
+const without = require('lodash/without')
 
 state.setKeyPair({
   privateKey: '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0',
@@ -21,8 +22,16 @@ let blockToBeDiscovered = blocks.createGenesisBlock({
 })
 
 const onBlockDiscovered = ({blockState}) => {
-  const isBlockValid = blocks.verifyBlock({blocks: state.blocks(), blockToBeVerified: blockState})
-  if(!isBlockValid) return console.log('failed validation')
+  const verification = blocks.verifyBlock({blocks: state.blocks(), blockToBeVerified: blockState})
+  if(verification.err) {
+    if(verification.err == 'invalid transactions') {
+      const response = transactions.verify({transactions: blockState.transactions})
+      state.removeUnconfirmedTransactions({transactions: response.invalidTransactions})
+      blockToBeDiscovered.transactions = without(blockToBeDiscovered.transactions, ...response.invalidTransactions)
+    }
+    console.log(verification.err)
+    return
+  }
 
   if(blockState.transactions.length > 1) console.log('your message was added!')
 

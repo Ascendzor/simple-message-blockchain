@@ -8,7 +8,9 @@ const message = JSON.stringify({
 })
 
 const signature = keys.sign({message, privateKey})
-if(signature !== '30450221009e8f293bcc9c7c269e80d36960d88d33d07f3263c079590bb63a645bb9ab9c05022022d9471c7c55563939753f5741243cf0b8de59acfb13a6bd01aa8e949f26657a') throw 'failed signature'
+if(signature !== '304402207a7c71db5d38d14cec1c187ae06c9e86e1b12c9e6a3bdb0a7b780aa4537cee5d022008542bdf5da954f10fdab1f4ab273c3b46c67f7510de9a847d84b2201604d624') throw 'failed signature'
 
 const isVerified = keys.verify({message, signature, publicKey})
 if(isVerified !== true) throw 'verification fail'
+
+console.log('all passed')
