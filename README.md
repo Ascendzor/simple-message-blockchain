@@ -59,6 +59,8 @@ writeMessage 'something that you want to keep' 042511bb916b3a335125bd3ffd4c8725f
 
 `viewAccount {publicKey}` -> prints all details about an account, takes a publicKey. publicKey should be seen as public unique account identifiers.
 
+`readall` -> prints all messages in the blockchain
+
 # Transactions
 
 There will likely end up being three types of transactions
