@@ -21,11 +21,11 @@ transactions (see transactions section, at the bottom of this readme)
 - [x] ~~let people sign transactions~~
 - [x] ~~define block format~~ (will likely change as this project makes progress towards 1.0.0)
 - [x] ~~PoW (sha256 for simplicity)~~
-- [x] ~~difficulty adjustment~~ (formula here https://github.com/Ascendzor/simple-message-blockchain/blob/master/adjustDifficulty.js)
+- [x] ~~difficulty adjustment~~ (https://github.com/Ascendzor/simple-message-blockchain/blob/master/adjustDifficulty.js)
 - [x] ~~earn messageCoin~~
 - [x] ~~write message~~
 - [ ] join peers
-- [ ] verify blocks (almost! https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js)
+- [x] ~~verify blocks~~ (https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js)
 - [ ] broadcast transactions
 - [ ] persist blockchain onto fs
 - [ ] include peers transactions into local block discovery
@@ -75,6 +75,6 @@ trade will let a user trade messageCoin to other users. trade will require an am
 
 # What next?
 
-Block format specification and block verification is the key to creating your own blockchain rules. See https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js for how blocks are specified and verified in this chain.
+Block format specification and block verification are the keys to creating your own blockchain rules. See https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js for how blocks are specified and verified in this chain.
 
 blockchains are protocols, not code. This is simply the first client for this type of blockchain, if you'd like to contribute to this simple-message-blockchain in your favourite language then go forth and create your own simple-message-blockchain in golang, python, ruby, C#, etc and join the simple-message-blockchain mesh.
