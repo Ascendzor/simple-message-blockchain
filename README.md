@@ -23,7 +23,7 @@ transactions (see transactions section, at the bottom of this readme)
 - [x] ~~PoW (sha256 for simplicity)~~
 - [x] ~~difficulty adjustment~~ (formula here https://github.com/Ascendzor/simple-message-blockchain/blob/master/adjustDifficulty.js)
 - [x] ~~earn messageCoin~~
-- [ ] write message
+- [x] ~~write message~~
 - [ ] join peers
 - [ ] verify blocks (almost! https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js)
 - [ ] broadcast transactions
@@ -44,19 +44,20 @@ node 6.10.3
 
 # CLI commands
 
-'blocks' -> prints a list of the blocks as your node sees them
+`blocks` -> prints a list of the blocks as your node sees them
 
-'block {number}' -> prints the details of the specific block
+`block {number}` -> prints the details of the specific block
 
-'transaction {message} {privateKey}' -> creates a transaction to write a message into the blockchain, using your private key to sign the transaction
+`generateKeyPair` -> prints newly generated publicKey & privateKey as hex
 
-'generateKeyPair' -> prints newly generated publicKey & privateKey as hex
+`writeMessage 'the message' {publicKey} {privateKey}` -> puts your message into the next block to be discovered
 
-(likely to be changed in the near future) 'setPublicKey {publicKey}' -> sets publicKey to be used for block reward
+Example:
+```
+writeMessage 'something that you want to keep' 042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50 89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0
+```
 
-(likely to be changed in the near future) 'setPrivateKey {privateKey}' -> sets privateKey to be used for block reward
-
-'viewAccount' -> prints all details about an account, takes a publicKey. publicKey should be seen as public unique account identifiers.
+`viewAccount {publicKey}` -> prints all details about an account, takes a publicKey. publicKey should be seen as public unique account identifiers.
 
 # Transactions
 
