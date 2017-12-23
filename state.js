@@ -1,3 +1,4 @@
+const without = require('lodash/without')
 let state = {
   transactionsToBeConfirmed: [],
   blocks: [],
@@ -23,6 +24,12 @@ module.exports = {
     return state.blocks
   },
   addUnconfirmedTransaction: ({transaction}) => {
-
+    state.transactionsToBeConfirmed.push(transaction)
+  },
+  removeUnconfirmedTransactions: ({transactions}) => {
+    state.transactionsToBeConfirmed = without(state.transactionsToBeConfirmed, ...transactions)
+  },
+  getUnconfirmedTransactions: () => {
+    return state.transactionsToBeConfirmed
   }
 }

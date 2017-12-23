@@ -18,7 +18,11 @@ module.exports = {
     const signature = keys.sign({message: body, privateKey: privateKey})
     return {body, signature}
   },
-  createWriteTransaction: () => {
-
+  createWriteTransaction: ({message, publicKey, privateKey}) => {
+    const body = JSON.stringify({publicKey, message})
+    return {
+      body,
+      signature: keys.sign({body, privateKey})
+    }
   }
 }

@@ -22,7 +22,7 @@ module.exports = {
       hash: null,
       previousHash: null,
       merkleRoot: null,
-      difficulty: '1234ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+      difficulty: 'fe8a87e6fbc78800000000000000000000000000000000000000000000000000', //to find the default difficulty I started at 0, let the difficulty adjust for 1000 blocks then used that. Something like that anyway, this is a good start point
       transactions: [rewardTransaction],
       nonce: null,
       number: 0,
@@ -57,7 +57,7 @@ module.exports = {
   },
   verifyBlock: ({blocks, blockToBeVerified}) => {
     const lastBlock = last(blocks)
-    if(!lastBlock) return true
+    if(!lastBlock) return true //genesis check
     if(blockToBeVerified.previousHash != lastBlock.hash) return false
     if(blockToBeVerified.number != lastBlock.number+1) return false
     if(blockToBeVerified.timeStamp < lastBlock.timeStamp) return false

@@ -7,6 +7,7 @@ const state = require('./state')
 const cli = require('./cli')
 const discoverBlocks = require('./discoverBlocks')
 const blocks = require('./blocks')
+const union = require('lodash/union')
 
 state.setKeyPair({
   privateKey: '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0',
@@ -23,7 +24,10 @@ const onBlockDiscovered = ({blockState}) => {
   const isBlockValid = blocks.verifyBlock({blocks: state.blocks(), blockToBeVerified: blockState})
   if(!isBlockValid) return console.log('failed validation')
 
+  if(blockState.transactions.length > 1) console.log('your message was added!')
+
   state.addBlock({block: blockState})
+  state.removeUnconfirmedTransactions({transactions: blockState.transactions})
   blockToBeDiscovered = blocks.createNextBlockFrame({
     blocks: state.blocks(),
     now: +moment.utc(),
@@ -38,8 +42,8 @@ communication.listenForOthers().then(() => {
 }).catch(err => console.log(err))
 
 setInterval(() => {
+  blockToBeDiscovered.transactions = union(blockToBeDiscovered.transactions, state.getUnconfirmedTransactions())
   discoverBlocks({blockToBeDiscovered, onBlockDiscovered})
-
 }, 32)
 
 cli()
