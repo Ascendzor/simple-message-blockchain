@@ -1,6 +1,7 @@
 const readline = require('readline')
 const state = require('./state')
 const transactions = require('./transactions')
+const blockChainExplorer = require('./blockChainExplorer')
 
 module.exports = () => {
   const readlineActual = readline.createInterface({input: process.stdin, output: process.stdout})
@@ -41,7 +42,7 @@ module.exports = () => {
         ]
         commands.forEach(a => console.log(a))
       } else if(command.startsWith('viewAccount')) {
-        const account = blockChainExplorer.getAccountDetails({publicKey: command.split(' ')[1]})
+        const account = blockChainExplorer.getAccountDetails({blocks: state.blocks(), publicKey: command.split(' ')[1]})
         console.log(account)
       }
       doQuestion()
