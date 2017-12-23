@@ -4,6 +4,7 @@ const adjustDifficulty = require('./adjustDifficulty')
 const blockTimesToBeTakenIntoConsiderationWhenCalculatingDifficulty = 16
 const moment = require('moment')
 const SHA256 = require("crypto-js/sha256")
+const blockChainExplorer = require('./blockChainExplorer')
 
 const hashBlock = ({blockToBeHashed}) => {
   const toBeHashed = blockToBeHashed.previousHash + blockToBeHashed.merkleRoot + blockToBeHashed.difficulty + blockToBeHashed.number + blockToBeHashed.timeStamp + blockToBeHashed.nonce
@@ -63,6 +64,7 @@ module.exports = {
     if(blockToBeVerified.timeStamp < lastBlock.timeStamp) return {err: 'invalid timeStamp'}
     if(hashBlock({blockToBeHashed: blockToBeVerified}) != blockToBeVerified.hash) return {err: 'invalid hash'}
     if(transactions.verify({transactions: blockToBeVerified.transactions}).invalidTransactions) return {err: 'invalid transactions'}
+    if(blockChainExplorer.wouldOverSpend({blocks, transactions: blockToBeVerified.transactions})) return {err: 'someone tried to spend more than they had'}
 
     return {good: true}
   }

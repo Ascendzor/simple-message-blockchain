@@ -24,12 +24,21 @@ let blockToBeDiscovered = blocks.createGenesisBlock({
 const onBlockDiscovered = ({blockState}) => {
   const verification = blocks.verifyBlock({blocks: state.blocks(), blockToBeVerified: blockState})
   if(verification.err) {
-    if(verification.err == 'invalid transactions') {
+    if(verification.err === 'invalid transactions') {
       const response = transactions.verify({transactions: blockState.transactions})
       state.removeUnconfirmedTransactions({transactions: response.invalidTransactions})
-      blockToBeDiscovered.transactions = without(blockToBeDiscovered.transactions, ...response.invalidTransactions)
+    }
+    if(verification.err === 'someone tried to spend more than they had') {
+      state.removeUnconfirmedTransactions({transactions: state.getUnconfirmedTransactions()})
     }
     console.log(verification.err)
+
+    blockToBeDiscovered = blocks.createNextBlockFrame({
+      blocks: state.blocks(),
+      now: +moment.utc(),
+      publicKey: state.keyPair().publicKey,
+      privateKey: state.keyPair().privateKey
+    })
     return
   }
 
