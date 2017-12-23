@@ -44,6 +44,12 @@ module.exports = () => {
       } else if(command.startsWith('viewAccount')) {
         const account = blockChainExplorer.getAccountDetails({blocks: state.blocks(), publicKey: command.split(' ')[1]})
         console.log(account)
+      } else if(command.startsWith('readall')) {
+        blockChainExplorer.getAllMessages({blocks: state.blocks()}).forEach(({publicKey, message}) => {
+          console.log('--------')
+          console.log('who:  ' + publicKey)
+          console.log('what: ' + message)
+        })
       }
       doQuestion()
     })

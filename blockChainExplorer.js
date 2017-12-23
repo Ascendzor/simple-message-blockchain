@@ -18,5 +18,16 @@ module.exports = {
       currentCoins: totalRewards-writes.length,
       writes
     }
+  },
+  getAllMessages: ({blocks}) => {
+    let writes = []
+    blocks.forEach(block => {
+      block.transactions.forEach(transaction => {
+        const body = JSON.parse(transaction.body)
+        if(body.type === 'write') writes.push({publicKey: body.publicKey, message: body.message})
+      })
+    })
+
+    return writes
   }
 }
