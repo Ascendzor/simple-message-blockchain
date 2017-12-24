@@ -27,10 +27,6 @@ module.exports = () => {
         const keyPair = keys.generateKeyPair()
         console.log('publicKey: ' + keyPair.publicKey)
         console.log('privateKey: ' + keyPair.privateKey)
-      } else if(command.startsWith('setPublicKey')) {
-        state.setKeyPair({publicKey: command.split(' ')[1]})
-      } else if(command.startsWith('setPrivateKey')) {
-        state.setKeyPair({privateKey: command.split(' ')[1]})
       } else if(command.startsWith('help')) {
         const commands = [
           'blocks',
@@ -51,6 +47,11 @@ module.exports = () => {
           console.log('who:  ' + publicKey)
           console.log('what: ' + message)
         })
+      } else if(command.startsWith('startMining')) {
+        state.setKeyPair({publicKey: command.split(' ')[1], privateKey: command.split(' ')[2]})
+        state.setShouldMine(true)
+      } else if(command.startsWith('stopMining')) {
+        state.setShouldMine(false)
       }
       doQuestion()
     })

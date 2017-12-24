@@ -10,11 +10,11 @@ const blocks = require('./blocks')
 const union = require('lodash/union')
 const without = require('lodash/without')
 
+//default keypair, just for the genesis block, dont worry about it
 state.setKeyPair({
   privateKey: '89dde6ac9065a5954340cf04f61ca9c402e80c74ce20c03547d6008e38cd5be0',
   publicKey: '042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50'
 })
-
 let blockToBeDiscovered = blocks.createGenesisBlock({
   publicKey: state.keyPair().publicKey,
   privateKey: state.keyPair().privateKey,
@@ -60,6 +60,7 @@ communication.listenForOthers().then(() => {
 }).catch(err => console.log(err))
 
 setInterval(() => {
+  if(!state.getShouldMine()) return
   blockToBeDiscovered.transactions = union(blockToBeDiscovered.transactions, state.getUnconfirmedTransactions())
   discoverBlocks({blockToBeDiscovered, onBlockDiscovered})
 }, 32)

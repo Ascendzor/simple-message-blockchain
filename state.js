@@ -4,7 +4,8 @@ const transactions = require('./transactions')
 let state = {
   transactionsToBeConfirmed: [],
   blocks: [],
-  keyPair: {}
+  keyPair: {},
+  shouldMine: false
 }
 
 module.exports = {
@@ -33,5 +34,9 @@ module.exports = {
   },
   getUnconfirmedTransactions: () => {
     return state.transactionsToBeConfirmed
-  }
+  },
+  setShouldMine: (wellThen) => {
+    state.shouldMine = wellThen
+  },
+  getShouldMine: () => state.shouldMine
 }
