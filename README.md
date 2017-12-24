@@ -65,8 +65,19 @@ writeMessage 'something that you want to keep' 042511bb916b3a335125bd3ffd4c8725f
 
 `readall` -> prints all messages in the blockchain
 
-# Example use case
+# Example use cases
 
+How to write "hello world" in this blockchain.
+run the client `node be` and be in the cli mode.
+
+`generateKeyPair` save publicKey and privateKey on some notepad or something
+
+Using the publicKey and privateKey that you've saved, `startMining {publicKey} {privateKey}`, this will start rewarding that publicKey account with "messageCoins"
+Wait ~15 seconds, to check that everything is ok `blocks` and there should be a few. All of them mined by you (until I get networking finished).
+
+Now we can write the message `writeMessage 'hello world' {publicKey} {privateKey}` the message isnt in the blockchain yet, the message is inside the next block to be mined. So keep checking `blocks` and you should see one of the blocks has two transactions, instead of the normal 1, that second transaction will be your message.
+
+lets read all the messages `readall` who is the publicKey who wrote the message, what is the message that was written. That's it!
 
 # Transactions
 
@@ -85,3 +96,15 @@ trade will let a user trade messageCoin to other users. trade will require an am
 Block format specification and block verification are the keys to creating your own blockchain rules. See https://github.com/Ascendzor/simple-message-blockchain/blob/master/blocks.js for how blocks are specified and verified in this chain.
 
 blockchains are protocols, not code. This is simply the first client for this type of blockchain, if you'd like to contribute to this simple-message-blockchain in your favourite language then go forth and create your own simple-message-blockchain in golang, python, ruby, C#, etc and join the simple-message-blockchain mesh.
+
+# Serious stuff and practical applications?
+
+Tracking postages. Imagine if there was a UI where you could see the line and points of where your package is supposed to go. At the start of it's journey the sender signs a message with your postage id, only the sender was able to sign that message and you receive it just by keeping your blockchain up to date. Now when your postage is picked up by the trucking company they sign a message that contains packageId+whoTheyReceivedItFrom, then when the truck gets to the airport the airport signs the a message that contains packageId+whoTheyReceivedItFrom... etc.
+
+DNS. The rules of this simple-message-blockchain are not constrained enough to be suitable but bear with me. If instead of being rewarded by "messageCoins" you were rewarded with "dnsEntryToken" and owning these tokens gave you authority to set a the value for any key. key: `troyswebsite.com`, value: `1.2.3.4`. You'd need to add a lot of rules and constraints because domain names need to expire and be renewable by the current owner and there's a lot of DNS-specific-logic that needs to be inside the blockFormat and blockVerification. But the advantages are huge:
+- Electricity/money are the only things you'd need to purchase a domain name.
+- No one can censor any domain name (think, pirateBay)
+- no internet hop to find server ip for dns lookup because it's on the blockchain on your computer already (more privacy)
+
+
+These are only two examples off the top of my head. I hope more people start to explore the capabilities of decentralized stores
