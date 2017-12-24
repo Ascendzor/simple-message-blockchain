@@ -50,6 +50,10 @@ node 6.10.3
 
 `generateKeyPair` -> prints newly generated publicKey & privateKey as hex
 
+`startMining {publicKey} {privateKey}` -> starts mining and creates the reward transaction using the provided pub/priv keys for any block you solve.
+
+`stopMining` -> stops mining
+
 `writeMessage 'the message' {publicKey} {privateKey}` -> puts your message into the next block to be discovered
 
 Example:
@@ -60,6 +64,9 @@ writeMessage 'something that you want to keep' 042511bb916b3a335125bd3ffd4c8725f
 `viewAccount {publicKey}` -> prints all details about an account, takes a publicKey. publicKey should be seen as public unique account identifiers.
 
 `readall` -> prints all messages in the blockchain
+
+# Example use case
+
 
 # Transactions
 
