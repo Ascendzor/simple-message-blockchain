@@ -65,6 +65,7 @@ module.exports = {
     if(hashBlock({blockToBeHashed: blockToBeVerified}) != blockToBeVerified.hash) return {err: 'invalid hash'}
     if(transactions.verify({transactions: blockToBeVerified.transactions}).invalidTransactions) return {err: 'invalid transactions'}
     if(blockChainExplorer.wouldOverSpend({blocks, transactions: blockToBeVerified.transactions})) return {err: 'someone tried to spend more than they had'}
+    if(blockToBeVerified.transactions.filter(t => JSON.parse(t.body).type === 'reward').length > 1) return {err: 'someone tried to claim more than 1 reward'}
 
     return {good: true}
   }
