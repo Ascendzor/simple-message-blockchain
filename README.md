@@ -99,8 +99,6 @@ blockchains are protocols, not code. This is simply the first client for this ty
 
 # Serious stuff and practical applications?
 
-Tracking postages. Imagine if there was a UI where you could see the line and points of where your package is supposed to go. At the start of it's journey the sender signs a message with your postage id, only the sender was able to sign that message and you receive it just by keeping your blockchain up to date. Now when your postage is picked up by the trucking company they sign a message that contains packageId+whoTheyReceivedItFrom, then when the truck gets to the airport the airport signs the a message that contains packageId+whoTheyReceivedItFrom... etc.
-
 DNS. The rules of this simple-message-blockchain are not constrained enough to be suitable but bear with me. If instead of being rewarded by "messageCoins" you were rewarded with "dnsEntryToken" and owning these tokens gave you authority to set a the value for any key. key: `troyswebsite.com`, value: `1.2.3.4`. You'd need to add a lot of rules and constraints because domain names need to expire and be renewable by the current owner and there's a lot of DNS-specific-logic that needs to be inside the blockFormat and blockVerification. But the advantages are huge:
 - Electricity and the internet are the only things you'd need to purchase a domain name, which you have the power to do without asking for any permission or going through a business.
 - No one can censor any domain name (think, pirateBay)
