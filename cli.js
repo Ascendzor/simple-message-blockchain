@@ -2,6 +2,7 @@ const readline = require('readline')
 const state = require('./state')
 const transactions = require('./transactions')
 const blockChainExplorer = require('./blockChainExplorer')
+const keys = require('./keys')
 
 module.exports = () => {
   const readlineActual = readline.createInterface({input: process.stdin, output: process.stdout})
