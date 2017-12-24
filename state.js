@@ -1,5 +1,6 @@
 const without = require('lodash/without')
 const transactions = require('./transactions')
+const union = require('lodash/union')
 
 let state = {
   transactionsToBeConfirmed: [],
@@ -33,5 +34,14 @@ module.exports = {
   },
   getUnconfirmedTransactions: () => {
     return state.transactionsToBeConfirmed
+  },
+  setBlockToBeDiscovered: ({blockFrame}) => {
+    state.blockToBeDiscovered = blockFrame
+  },
+  getBlockToBeDiscovered: () => {
+    return state.blockToBeDiscovered
+  },
+  manageTransactionsIntoBlockToBeDiscovered: () => {
+    state.blockToBeDiscovered.transactions = union(state.blockToBeDiscovered.transactions, state.transactionsToBeConfirmed)
   }
 }

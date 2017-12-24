@@ -1,4 +1,4 @@
-const communication = require('./communication')
+const network = require('./network')
 const keys = require('./keys')
 const moment = require('moment')
 const transactions = require('./transactions')
@@ -7,7 +7,6 @@ const state = require('./state')
 const cli = require('./cli')
 const discoverBlocks = require('./discoverBlocks')
 const blocks = require('./blocks')
-const union = require('lodash/union')
 const without = require('lodash/without')
 
 state.setKeyPair({
@@ -15,11 +14,12 @@ state.setKeyPair({
   publicKey: '042511bb916b3a335125bd3ffd4c8725f9ae8bba5d131148f0c3da10031cea5ab98854fbb4f23f0af0f764450f59efff6744c9e5362ee35461e2e8ff168943cf50'
 })
 
-let blockToBeDiscovered = blocks.createGenesisBlock({
+const genesisBlockFrame = blocks.createGenesisBlock({
   publicKey: state.keyPair().publicKey,
   privateKey: state.keyPair().privateKey,
   now: +moment.utc()
 })
+state.setBlockToBeDiscovered({blockFrame: genesisBlockFrame})
 
 const onBlockDiscovered = ({blockState}) => {
   const verification = blocks.verifyBlock({blocks: state.blocks(), blockToBeVerified: blockState})
@@ -33,35 +33,34 @@ const onBlockDiscovered = ({blockState}) => {
     }
     console.log(verification.err)
 
-    blockToBeDiscovered = blocks.createNextBlockFrame({
+    state.setBlockToBeDiscovered({blockFrame: blocks.createNextBlockFrame({
       blocks: state.blocks(),
       now: +moment.utc(),
       publicKey: state.keyPair().publicKey,
       privateKey: state.keyPair().privateKey
-    })
+    })})
     return
   }
 
   if(blockState.transactions.length > 1) console.log('your message was added!')
 
   state.addBlock({block: blockState})
+  network.broadcastBlock({block: blockState})
   state.removeUnconfirmedTransactions({transactions: blockState.transactions})
-  blockToBeDiscovered = blocks.createNextBlockFrame({
+  const nextBlockFrame = blocks.createNextBlockFrame({
     blocks: state.blocks(),
     now: +moment.utc(),
     publicKey: state.keyPair().publicKey,
     privateKey: state.keyPair().privateKey
   })
+  state.setBlockToBeDiscovered({blockFrame: nextBlockFrame})
 }
 
 
-communication.listenForOthers().then(() => {
-  return communication.joinPeers()
-}).catch(err => console.log(err))
-
 setInterval(() => {
-  blockToBeDiscovered.transactions = union(blockToBeDiscovered.transactions, state.getUnconfirmedTransactions())
-  discoverBlocks({blockToBeDiscovered, onBlockDiscovered})
+  state.manageTransactionsIntoBlockToBeDiscovered()
+  discoverBlocks({blockToBeDiscovered: state.getBlockToBeDiscovered(), onBlockDiscovered})
 }, 32)
 
+network.joinMesh()
 cli()

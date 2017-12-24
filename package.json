@@ -17,6 +17,8 @@
     "merkle-tree-gen": "1.1.0",
     "moment": "2.19.4",
     "openpgp": "2.5.14",
-    "readline-sync": "1.4.7"
+    "readline-sync": "1.4.7",
+    "socket.io": "2.0.4",
+    "socket.io-client": "2.0.4"
   }
 }
